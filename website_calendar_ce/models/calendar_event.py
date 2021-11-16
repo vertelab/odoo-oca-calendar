@@ -14,6 +14,10 @@ class CalendarEvent(models.Model):
     access_token = fields.Char('Access Token', default=_default_access_token, readonly=True)
     booking_type_id = fields.Many2one('calendar.booking.type', 'Online Booking', readonly=True)
 
+    @api.model
+    def _get_public_fields(self):
+        return super()._get_public_fields() | {'booking_type_id'}
+
     def _compute_is_highlighted(self):
         super(CalendarEvent, self)._compute_is_highlighted()
         if self.env.context.get('active_model') == 'calendar.booking.type':
